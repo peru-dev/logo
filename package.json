@@ -1,0 +1,27 @@
+{
+  "name": "@peru-dev/logo",
+  "version": "1.0.0",
+  "description": "Perú Dev Logo",
+  "main": "index.js",
+  "bin": {
+    "peru-dev-logo": "./bin/cli.js"
+  },
+  "scripts": {
+    "pretest": "eslint .",
+    "test": "jest --verbose"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "pretty-bytes": "^5.2.0",
+    "puppeteer": "^1.17.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "jest": "^24.8.0",
+    "jest-puppeteer": "^4.2.0"
+  }
+}
