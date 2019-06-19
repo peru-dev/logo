@@ -6,6 +6,10 @@ const createLogo = require('./lib/logo');
 const { saveAsSVG, saveAsPNG } = require('./lib/common');
 
 
+const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
+
+
 module.exports = (opts) => {
   const { buildDir, iconSizes, logoSizes } = opts;
   const svgIcons = iconSizes.map(createIcon);
@@ -22,10 +26,12 @@ module.exports = (opts) => {
       [],
     ))
     .then(
-      flattened => promisify(fs.writeFile)(
+      flattened => writeFile(
         path.join(buildDir, 'files.json'),
         JSON.stringify(flattened, null, 2),
       )
+        .then(() => readFile(path.join(__dirname, 'lib', 'index.html'), 'utf8'))
+        .then(html => writeFile(path.join(buildDir, 'index.html'), html))
         .then(() => flattened),
     );
 };

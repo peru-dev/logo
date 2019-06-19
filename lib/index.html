@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Perú Dev Logo</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Major+Mono+Display">
+    <style>
+    body {
+      font-family: "Major Mono Display", monospace;
+    }
+    </style>
+  </head>
+  <body>
+    <script>
+    const relative = (fname) => {
+      const parts = fname.split('/');
+      return parts.slice(parts.length - 3).join('/');
+    };
+
+    const Figure = ({ image }) => {
+      const container = document.createElement('figure');
+      const img = document.createElement('img');
+      const caption = document.createElement('figcaption');
+
+      img.src = image.src;
+      img.width = image.width;
+      img.height = image.height;
+
+      caption.innerText = `${image.src} (${image.size} bytes)`;
+
+      container.appendChild(img);
+      container.appendChild(caption);
+
+      return container;
+    };
+
+    const Section = ({ title, images }) => {
+      const container = document.createElement('div');
+      const heading = document.createElement('h2');
+      heading.innerText = title;
+      container.appendChild(heading);
+      images.forEach((image) => {
+        container.appendChild(Figure({ image }));
+      });
+      return container;
+    };
+
+    fetch('./files.json')
+      .then(resp => resp.json())
+      .then(json => json.reduce(
+        (memo, { fname, width, height, size }) => {
+          const src = relative(fname);
+          const [dir] = src.split('/');
+
+          if (dir === 'icons') {
+            return {
+              ...memo,
+              icons: [...memo.icons, { src, width, height, size }],
+            };
+          }
+
+          if (dir === 'logo') {
+            return {
+              ...memo,
+              logos: [...memo.logos, { src, width, height, size }],
+            };
+          }
+          return memo;
+        },
+        { icons: [], logos: [] },
+      ))
+      .then(({ icons, logos }) => {
+        const container = document.createElement('div');
+
+        container.appendChild(Section({ title: 'Icons', images: icons }));
+        container.appendChild(Section({ title: 'Logos', images: logos }));
+
+        document.body.appendChild(container);
+      });
+    </script>
+  </body>
+</html>
