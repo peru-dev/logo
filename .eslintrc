@@ -1,4 +1,7 @@
 {
   "extends": "airbnb-base",
-  "env": { "jest": true }
+  "env": { "jest": true },
+  "rules": {
+    "no-nested-ternary": "off"
+  }
 }
